@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EJS</title>
+</head>
+<body>
+    <h1>Welcome to EJS</h1>
+    <p>Embedded Javascript</p>
+    <h1>My name is <%= name %></h1>
+    <% if (name == 'John') { %>
+        <h1>My name is Ojebode John</h1>
+    <% } else { %>
+        <h1></h1>
+    <% } %>
+
+    <% for( let i = 1; i <= 200; i++ ) { %>
+        <% if (i % 5 == 0) { %>
+            <h1 style="color: rebeccapurple;"><%= i %> is divisible by 5</h1>
+            <% } else if (i % 2 == 0) { %>
+                <h1 style="color: blue;"><%= i %> is even number </h1>
+            <% } else { %>
+                <h1 style="color: red;"><%= i %> is odd number </h1>
+                <% } %>
+
+
+    <% } %>
+
+
+</body>
+</html>
