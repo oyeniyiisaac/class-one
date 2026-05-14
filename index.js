@@ -65,11 +65,11 @@ const port = 4000;
 //     }
 
 // ]
-
-
+const users = [];
 
 app.set('view engine', 'ejs') // use to call the engine we are using
-
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.get('/', (req, res) => {
     res.send('welcome to my Express server!')
 })
@@ -81,6 +81,13 @@ app.get('/form', (req, res) => {
 })
 app.get('/signin', (req, res) => {
     res.render('signIn.ejs')
+})
+app.post('/submit', (req, res) => {
+    const user = req.body
+    users.push(user);
+    res.send('form submitted successfully')
+    console.log(users);
+
 })
 
 // app.get('/homepage', (req, res) => {
