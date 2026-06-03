@@ -1,7 +1,10 @@
 const express = require('express')
 const ejs = require('ejs')
 const app = express()
+const mongoose = require("mongoose");
+const userModel = require('./models/user.model');
 const port = 4000;
+const dbURL = "mongodb+srv://mercy:mercy12@cluster0.fr5sm3i.mongodb.net/?appName=Cluster0"
 // const student = [
 //     {
 //         id: 1,
@@ -74,7 +77,7 @@ app.get('/', (req, res) => {
     res.send('welcome to my Express server!')
 })
 app.get('/ejs', (req, res) => {
-    res.render('index.ejs', {name: 'John Doe'})
+    res.render('index.ejs', { name: 'John Doe' })
 })
 app.get('/form', (req, res) => {
     res.render('form.ejs')
@@ -83,11 +86,31 @@ app.get('/signin', (req, res) => {
     res.render('signIn.ejs')
 })
 app.post('/submit', (req, res) => {
-    const user = req.body
-    users.push(user);
-    res.send('form submitted successfully')
-    console.log(users);
+    // const user = req.body
+    const { firstName, lastName, email, password } = req.body;
+    // users.push(user);
+    // res.send('form submitted successfully')
+    const newStudent = new userModel(req.body)
+    newStudent.save()
+        .then((result) => {
+            console.log(result)
+            res.render('submit', { name: result.firstName })
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    // console.log(result);
 
+})
+
+app.get('/table', async (req, res) => {
+    try {
+        const students = await userModel.find()
+        console.log(students)
+        res.render("table", {students})
+    } catch (err) {
+        console.log(err)
+    }
 })
 
 // app.get('/homepage', (req, res) => {
@@ -101,6 +124,17 @@ app.post('/submit', (req, res) => {
 // app.get('/api', (req, res) => {
 //     res.json(student)
 // })
+mongoose.connect(dbURL, { dbName: 'user' })
+    .then(() => {
+    console.log('mongoDb connected');
+})
+    .catch((err) => {
+        console.log(err);
+
+    })
+
+
+
 app.listen(port, () => {
     console.log(`server is running on port ${port}`);
 })
